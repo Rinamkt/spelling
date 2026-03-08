@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spelling Bee de Ricky 🐝</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD93D;
+    --orange: #FF6B35;
+    --pink: #FF6B9D;
+    --purple: #A855F7;
+    --blue: #3B82F6;
+    --green: #22C55E;
+    --bg: #FFF8E7;
+    --dark: #2D1B69;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 20% 20%, #FFE4B5 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, #E8D5FF 0%, transparent 50%);
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '🐝';
+    position: absolute; font-size: 60px; left: 30px; top: 50%; transform: translateY(-50%);
+    animation: buzz 2s ease-in-out infinite;
+  }
+  header::after {
+    content: '⭐';
+    position: absolute; font-size: 50px; right: 30px; top: 50%; transform: translateY(-50%);
+    animation: spin 3s linear infinite;
+  }
+
+  @keyframes buzz {
+    0%,100% { transform: translateY(-50%) rotate(-10deg); }
+    50% { transform: translateY(-60%) rotate(10deg); }
+  }
+  @keyframes spin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.8em;
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1em;
+    font-weight: 700;
+    margin-top: 5px;
+  }
+
+  .score-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+    font-weight: 800;
+    color: var(--dark);
+  }
+
+  .score-num {
+    background: var(--yellow);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3em;
+    color: var(--dark);
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    max-width: 200px;
+    background: #EEE;
+    border-radius: 20px;
+    height: 14px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+  }
+
+  .mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .mode-btn {
+    background: white;
+    border: 3px solid #DDD;
+    border-radius: 15px;
+    padding: 12px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--dark);
+  }
+
+  .mode-btn:hover, .mode-btn.active {
+    border-color: var(--orange);
+    background: var(--orange);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+  }
+
+  /* WORD CARD */
+  .word-card {
+    background: white;
+    border-radius: 25px;
+    padding: 35px 30px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    border: 3px solid transparent;
+    transition: all 0.3s;
+    margin-bottom: 25px;
+  }
+
+  .word-number {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1em;
+    color: #999;
+    margin-bottom: 10px;
+  }
+
+  .word-hint {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: 600;
+    min-height: 30px;
+  }
+
+  .letters-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+  }
+
+  .letter-box {
+    width: 52px;
+    height: 60px;
+    border: 3px solid #DDD;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8em;
+    color: var(--dark);
+    background: #F8F8F8;
+    transition: all 0.2s;
+  }
+
+  .letter-box.blank {
+    background: var(--yellow);
+    border: 3px dashed var(--orange);
+    color: transparent;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .letter-box.blank::after {
+    content: '?';
+    color: var(--orange);
+    position: absolute;
+    font-size: 0.9em;
+  }
+
+  .letter-box.filled-correct {
+    background: var(--green);
+    border-color: #16A34A;
+    color: white;
+    animation: pop 0.3s ease;
+  }
+
+  .letter-box.filled-wrong {
+    background: #FF4444;
+    border-color: #CC0000;
+    color: white;
+    animation: shake 0.3s ease;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* OPTIONS */
+  .options-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .option-btn {
+    width: 52px;
+    height: 52px;
+    border: 3px solid var(--purple);
+    border-radius: 12px;
+    background: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6em;
+    color: var(--purple);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: var(--purple);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .option-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .feedback-msg {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5em;
+    min-height: 40px;
+    text-align: center;
+    transition: all 0.3s;
+    margin-bottom: 10px;
+  }
+
+  .action-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: white;
+  }
+
+  .btn-hint {
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: white;
+  }
+
+  .btn-show {
+    background: linear-gradient(135deg, #EEE, #DDD);
+    color: #666;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  /* WORD LIST GRID */
+  .words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .word-tile {
+    background: white;
+    border: 3px solid #EEE;
+    border-radius: 15px;
+    padding: 12px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 800;
+  }
+
+  .word-tile:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(255,107,53,0.2);
+  }
+
+  .word-tile.done {
+    background: linear-gradient(135deg, var(--green), #16A34A);
+    border-color: #16A34A;
+    color: white;
+  }
+
+  .word-tile .wt-num {
+    font-size: 0.75em;
+    color: #999;
+    display: block;
+  }
+
+  .word-tile.done .wt-num { color: rgba(255,255,255,0.7); }
+
+  .word-tile .wt-word {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1em;
+    color: var(--dark);
+    display: block;
+    margin-top: 2px;
+  }
+
+  .word-tile.done .wt-word { color: white; }
+
+  /* CELEBRATION */
+  .celebration {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .celebration.show {
+    display: flex;
+  }
+
+  .celeb-card {
+    background: white;
+    border-radius: 30px;
+    padding: 50px 40px;
+    text-align: center;
+    max-width: 400px;
+    animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .celeb-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3em;
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+
+  .confetti {
+    font-size: 3em;
+    animation: spin 1s linear infinite;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .stars {
+    font-size: 2em;
+    letter-spacing: 5px;
+    margin: 15px 0;
+  }
+
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5em;
+    color: var(--dark);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.8em; }
+    header::before, header::after { display: none; }
+    .letter-box, .option-btn { width: 42px; height: 48px; font-size: 1.4em; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐝 Spelling Bee de Ricky</h1>
+  <p class="subtitle">¡Palabras 50 - 75! Let's go! 🚀</p>
+</header>
+
+<div class="score-bar">
+  <div class="score-item">⭐ Puntos: <span class="score-num" id="scoreNum">0</span></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <div class="score-item">✅ <span class="score-num" id="doneNum">0</span>/26</div>
+</div>
+
+<div class="container">
+
+  <div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('fill')" id="modeFill">✏️ Completar letras</button>
+    <button class="mode-btn" onclick="setMode('list')" id="modeList">📋 Ver todas</button>
+  </div>
+
+  <!-- FILL MODE -->
+  <div id="fillMode">
+    <div class="word-card" id="wordCard">
+      <div class="word-number" id="wordNumber">Palabra #50</div>
+      <div class="word-hint" id="wordHint">💡</div>
+      <div class="letters-row" id="lettersRow"></div>
+      <div class="options-row" id="optionsRow"></div>
+      <div class="feedback-msg" id="feedbackMsg"></div>
+      <div class="action-btns">
+        <button class="btn btn-hint" onclick="showHint()">💡 Pista</button>
+        <button class="btn btn-show" onclick="showAnswer()">👁️ Ver respuesta</button>
+        <button class="btn btn-next" onclick="nextWord()">Siguiente ➡️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST MODE -->
+  <div id="listMode" style="display:none">
+    <div class="section-title">📚 Todas las palabras (50-75)</div>
+    <div class="words-grid" id="wordsGrid"></div>
+  </div>
+
+</div>
+
+<!-- CELEBRATION -->
+<div class="celebration" id="celebration">
+  <div class="celeb-card">
+    <span class="confetti">🎉</span>
+    <h2>¡Genial!</h2>
+    <p style="font-size:1.3em; font-weight:800; color:#666;">¡Escribiste bien la palabra!</p>
+    <div class="stars" id="celebStars">⭐⭐⭐</div>
+    <p style="font-family:'Fredoka One'; font-size:1.8em; color:var(--orange)" id="celebWord"></p>
+    <button class="btn btn-next" onclick="closeCelebration()" style="margin-top:20px; font-size:1.2em">¡Siguiente! ➡️</button>
+  </div>
+</div>
+
+<script>
+const words = [
+  { num: 50, word: "safe",     hint: "Something that keeps you protected 🛡️" },
+  { num: 51, word: "dry",      hint: "Not wet, like the desert ☀️" },
+  { num: 52, word: "wet",      hint: "Like after the rain 🌧️" },
+  { num: 53, word: "any",      hint: "Like: do you have ___ cookies? 🍪" },
+  { num: 54, word: "much",     hint: "How ___ water do you want? 💧" },
+  { num: 55, word: "herd",     hint: "A group of cows or animals 🐄🐄🐄" },
+  { num: 56, word: "ant",      hint: "A tiny insect that carries food 🐜" },
+  { num: 57, word: "bee",      hint: "Makes honey and says bzzzz 🐝" },
+  { num: 58, word: "piano",    hint: "A musical instrument with black and white keys 🎹" },
+  { num: 59, word: "note",     hint: "A short written message 📝" },
+  { num: 60, word: "lute",     hint: "An old string instrument like a guitar 🎸" },
+  { num: 61, word: "guitar",   hint: "A string instrument you strum 🎸" },
+  { num: 62, word: "few",      hint: "Not many, just a little bit 🤏" },
+  { num: 63, word: "ring",     hint: "You wear it on your finger 💍" },
+  { num: 64, word: "ask",      hint: "To make a question ❓" },
+  { num: 65, word: "one",      hint: "The number 1️⃣" },
+  { num: 66, word: "child",    hint: "A young boy or girl 👦" },
+  { num: 67, word: "help",     hint: "When someone needs assistance 🆘" },
+  { num: 68, word: "audio",    hint: "Sound, like music or a recording 🎵" },
+  { num: 69, word: "cover",    hint: "Put something on top to protect it 🛏️" },
+  { num: 70, word: "coin",     hint: "A round piece of metal money 🪙" },
+  { num: 71, word: "pet",      hint: "An animal you have at home 🐶" },
+  { num: 72, word: "map",      hint: "It shows where places are 🗺️" },
+  { num: 73, word: "verb",     hint: "An action word like run, eat, sleep 🏃" },
+  { num: 74, word: "salad",    hint: "A healthy food with vegetables 🥗" },
+  { num: 75, word: "banana",   hint: "A yellow curved fruit 🍌" },
+];
+
+let currentIndex = 0;
+let score = 0;
+let completed = new Set();
+let blanks = []; // indices of blank positions in current word
+let currentBlankIdx = 0;
+let wordSolved = false;
+let hintUsed = false;
+let currentMode = 'fill';
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('fillMode').style.display = mode === 'fill' ? 'block' : 'none';
+  document.getElementById('listMode').style.display = mode === 'list' ? 'block' : 'none';
+  document.getElementById('modeFill').classList.toggle('active', mode === 'fill');
+  document.getElementById('modeList').classList.toggle('active', mode === 'list');
+  if (mode === 'list') renderList();
+  if (mode === 'fill') renderWord();
+}
+
+function renderList() {
+  const grid = document.getElementById('wordsGrid');
+  grid.innerHTML = words.map((w, i) => `
+    <div class="word-tile ${completed.has(i) ? 'done' : ''}" onclick="goToWord(${i})">
+      <span class="wt-num">#${w.num}</span>
+      <span class="wt-word">${w.word}</span>
+    </div>
+  `).join('');
+}
+
+function goToWord(idx) {
+  currentIndex = idx;
+  setMode('fill');
+  renderWord();
+}
+
+function generateBlanks(word) {
+  const len = word.length;
+  let numBlanks;
+  if (len <= 3) numBlanks = 1;
+  else if (len <= 5) numBlanks = 2;
+  else if (len <= 7) numBlanks = 3;
+  else numBlanks = 4;
+
+  const indices = [];
+  const available = [...Array(len).keys()].filter(i => i > 0); // keep first letter
+  while (indices.length < Math.min(numBlanks, available.length)) {
+    const r = available[Math.floor(Math.random() * available.length)];
+    if (!indices.includes(r)) indices.push(r);
+  }
+  return indices;
+}
+
+function generateOptions(word, blanks) {
+  const correctLetters = blanks.map(i => word[i]);
+  const allLetters = 'abcdefghijklmnoprstuvwy';
+  const options = [...new Set(correctLetters)];
+  while (options.length < Math.min(6, correctLetters.length + 4)) {
+    const l = allLetters[Math.floor(Math.random() * allLetters.length)];
+    if (!options.includes(l)) options.push(l);
+  }
+  return options.sort(() => Math.random() - 0.5);
+}
+
+function renderWord() {
+  const w = words[currentIndex];
+  wordSolved = false;
+  hintUsed = false;
+  currentBlankIdx = 0;
+
+  document.getElementById('wordNumber').textContent = `Palabra #${w.num} (${currentIndex + 1} de ${words.length})`;
+  document.getElementById('wordHint').textContent = w.hint;
+  document.getElementById('feedbackMsg').textContent = '';
+
+  blanks = generateBlanks(w.word);
+  const options = generateOptions(w.word, blanks);
+
+  // Render letter boxes
+  const row = document.getElementById('lettersRow');
+  row.innerHTML = w.word.split('').map((ch, i) => {
+    if (blanks.includes(i)) {
+      return `<div class="letter-box blank" id="box-${i}" onclick="clickBox(${i})"></div>`;
+    }
+    return `<div class="letter-box">${ch.toUpperCase()}</div>`;
+  }).join('');
+
+  // Render options
+  const optRow = document.getElementById('optionsRow');
+  optRow.innerHTML = options.map(l =>
+    `<button class="option-btn" onclick="selectLetter('${l}', this)">${l.toUpperCase()}</button>`
+  ).join('');
+}
+
+function selectLetter(letter, btn) {
+  if (wordSolved) return;
+  if (currentBlankIdx >= blanks.length) return;
+
+  const w = words[currentIndex];
+  const targetIdx = getNextBlank();
+  if (targetIdx === null) return;
+
+  const box = document.getElementById(`box-${targetIdx}`);
+  const correct = w.word[targetIdx];
+
+  if (letter === correct) {
+    box.textContent = letter.toUpperCase();
+    box.className = 'letter-box filled-correct';
+    currentBlankIdx++;
+    btn.disabled = true;
+
+    // Check if all blanks filled
+    if (currentBlankIdx >= blanks.length) {
+      wordSolved = true;
+      completed.add(currentIndex);
+      const points = hintUsed ? 5 : 10;
+      score += points;
+      updateScore();
+      document.getElementById('feedbackMsg').innerHTML = ``;
+      setTimeout(() => showCelebration(w.word, points), 300);
+    } else {
+      document.getElementById('feedbackMsg').textContent = '✅ ¡Correcto! Siguiente letra...';
+    }
+  } else {
+    box.className = 'letter-box blank filled-wrong';
+    setTimeout(() => {
+      box.className = 'letter-box blank';
+      box.textContent = '';
+    }, 500);
+    document.getElementById('feedbackMsg').textContent = '❌ ¡Intenta otra letra!';
+    // flash wrong
+  }
+}
+
+function getNextBlank() {
+  if (currentBlankIdx >= blanks.length) return null;
+  return blanks[currentBlankIdx];
+}
+
+function clickBox(idx) {
+  // Allow clicking a specific blank to focus it
+  const blankIdx = blanks.indexOf(idx);
+  if (blankIdx !== -1 && blankIdx >= currentBlankIdx) {
+    currentBlankIdx = blankIdx;
+  }
+}
+
+function showHint() {
+  const w = words[currentIndex];
+  if (wordSolved) return;
+  hintUsed = true;
+  // Reveal next blank
+  const targetIdx = getNextBlank();
+  if (targetIdx === null) return;
+  const box = document.getElementById(`box-${targetIdx}`);
+  box.textContent = w.word[targetIdx].toUpperCase();
+  box.className = 'letter-box filled-correct';
+  currentBlankIdx++;
+  document.getElementById('feedbackMsg').textContent = '💡 ¡Pista usada! (-5 puntos)';
+
+  if (currentBlankIdx >= blanks.length) {
+    wordSolved = true;
+    completed.add(currentIndex);
+    score = Math.max(0, score + 3);
+    updateScore();
+  }
+}
+
+function showAnswer() {
+  const w = words[currentIndex];
+  blanks.forEach(i => {
+    const box = document.getElementById(`box-${i}`);
+    if (box) {
+      box.textContent = w.word[i].toUpperCase();
+      box.className = 'letter-box filled-correct';
+    }
+  });
+  wordSolved = true;
+  document.getElementById('feedbackMsg').textContent = '👁️ Así se escribe: ' + w.word.toUpperCase();
+  document.getElementById('optionsRow').querySelectorAll('button').forEach(b => b.disabled = true);
+}
+
+function nextWord() {
+  currentIndex = (currentIndex + 1) % words.length;
+  renderWord();
+}
+
+function showCelebration(word, points) {
+  document.getElementById('celebWord').textContent = word.toUpperCase() + ' ✓';
+  document.getElementById('celebStars').textContent = points >= 10 ? '⭐⭐⭐' : '⭐⭐';
+  document.getElementById('celebration').classList.add('show');
+}
+
+function closeCelebration() {
+  document.getElementById('celebration').classList.remove('show');
+  nextWord();
+}
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('doneNum').textContent = completed.size;
+  document.getElementById('progressFill').style.width = (completed.size / words.length * 100) + '%';
+}
+
+// INIT
+renderWord();
+</script>
+</body>
+</html>
