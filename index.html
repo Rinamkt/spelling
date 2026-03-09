@@ -7,107 +7,105 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --yellow: #FFD93D;
-    --orange: #FF6B35;
-    --pink: #FF6B9D;
-    --purple: #A855F7;
-    --blue: #3B82F6;
-    --green: #22C55E;
-    --bg: #FFF8E7;
-    --dark: #2D1B69;
+    --yellow: #FFD93D; --orange: #FF6B35; --purple: #A855F7;
+    --blue: #3B82F6; --green: #22C55E; --bg: #FFF8E7; --dark: #2D1B69;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
+    font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh;
     background-image: radial-gradient(circle at 20% 20%, #FFE4B5 0%, transparent 50%),
                       radial-gradient(circle at 80% 80%, #E8D5FF 0%, transparent 50%);
   }
   header {
     background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(255,107,53,0.3);
-    position: relative;
-    overflow: hidden;
+    padding: 20px; text-align: center; box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+    position: relative; overflow: hidden;
   }
-  header::before { content: '🐝'; position: absolute; font-size: 60px; left: 30px; top: 50%; transform: translateY(-50%); animation: buzz 2s ease-in-out infinite; }
-  header::after  { content: '⭐'; position: absolute; font-size: 50px; right: 30px; top: 50%; transform: translateY(-50%); animation: spin 3s linear infinite; }
-  @keyframes buzz { 0%,100% { transform: translateY(-50%) rotate(-10deg); } 50% { transform: translateY(-60%) rotate(10deg); } }
-  @keyframes spin { from { transform: translateY(-50%) rotate(0deg); } to { transform: translateY(-50%) rotate(360deg); } }
-  h1 { font-family: 'Fredoka One', cursive; font-size: 2.8em; color: white; text-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
-  .subtitle { color: rgba(255,255,255,0.9); font-size: 1.1em; font-weight: 700; margin-top: 5px; }
+  header::before { content:'🐝'; position:absolute; font-size:60px; left:30px; top:50%; transform:translateY(-50%); animation:buzz 2s ease-in-out infinite; }
+  header::after  { content:'⭐'; position:absolute; font-size:50px; right:30px; top:50%; transform:translateY(-50%); animation:spin 3s linear infinite; }
+  @keyframes buzz { 0%,100%{transform:translateY(-50%) rotate(-10deg)}50%{transform:translateY(-60%) rotate(10deg)} }
+  @keyframes spin  { from{transform:translateY(-50%) rotate(0deg)} to{transform:translateY(-50%) rotate(360deg)} }
+  h1 { font-family:'Fredoka One',cursive; font-size:2.8em; color:white; text-shadow:3px 3px 0 rgba(0,0,0,0.2); }
+  .subtitle { color:rgba(255,255,255,0.9); font-size:1.1em; font-weight:700; margin-top:5px; }
 
-  .score-bar {
-    display: flex; justify-content: center; align-items: center; gap: 20px;
-    padding: 15px 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap;
+  .score-bar { display:flex; justify-content:center; align-items:center; gap:20px; padding:15px 20px; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.1); flex-wrap:wrap; }
+  .score-item { display:flex; align-items:center; gap:8px; font-size:1.1em; font-weight:800; color:var(--dark); }
+  .score-num  { background:var(--yellow); padding:4px 14px; border-radius:20px; font-family:'Fredoka One',cursive; font-size:1.3em; color:var(--dark); }
+  .progress-bar-wrap { flex:1; max-width:200px; background:#EEE; border-radius:20px; height:14px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--blue)); border-radius:20px; transition:width 0.5s ease; }
+
+  .container { max-width:900px; margin:0 auto; padding:30px 20px; }
+
+  .mode-selector { display:flex; justify-content:center; gap:15px; margin-bottom:20px; flex-wrap:wrap; }
+  .mode-btn { background:white; border:3px solid #DDD; border-radius:15px; padding:12px 24px; font-family:'Nunito',sans-serif; font-size:1em; font-weight:800; cursor:pointer; transition:all 0.2s; color:var(--dark); }
+  .mode-btn:hover,.mode-btn.active { border-color:var(--orange); background:var(--orange); color:white; transform:translateY(-2px); }
+
+  .group-selector { display:flex; justify-content:center; gap:10px; margin-bottom:25px; flex-wrap:wrap; }
+  .group-btn { background:white; border:2px solid #DDD; border-radius:50px; padding:8px 20px; font-family:'Nunito',sans-serif; font-size:0.95em; font-weight:800; cursor:pointer; transition:all 0.2s; color:var(--dark); }
+  .group-btn:hover,.group-btn.active { border-color:var(--purple); background:var(--purple); color:white; }
+
+  .word-card { background:white; border-radius:25px; padding:35px 30px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.1); margin-bottom:25px; }
+  .word-number { font-family:'Fredoka One',cursive; font-size:1em; color:#999; margin-bottom:8px; }
+  .word-hint   { font-size:1.1em; color:#666; margin-bottom:15px; font-weight:600; min-height:30px; }
+
+  .speak-btn {
+    background: linear-gradient(135deg, #06B6D4, #3B82F6); border:none; border-radius:50px; color:white;
+    font-family:'Fredoka One',cursive; font-size:1.1em; padding:10px 28px; cursor:pointer; margin-bottom:20px;
+    display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 15px rgba(6,182,212,0.4);
+    transition:all 0.2s; animation:pulse 2s ease-in-out infinite;
   }
-  .score-item { display: flex; align-items: center; gap: 8px; font-size: 1.1em; font-weight: 800; color: var(--dark); }
-  .score-num { background: var(--yellow); padding: 4px 14px; border-radius: 20px; font-family: 'Fredoka One', cursive; font-size: 1.3em; color: var(--dark); }
-  .progress-bar-wrap { flex: 1; max-width: 200px; background: #EEE; border-radius: 20px; height: 14px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: 20px; transition: width 0.5s ease; }
+  .speak-btn:hover { transform:scale(1.05); }
+  .speak-btn.speaking { background:linear-gradient(135deg,#F59E0B,#EF4444); animation:none; }
+  @keyframes pulse { 0%,100%{box-shadow:0 4px 15px rgba(6,182,212,0.4)} 50%{box-shadow:0 4px 25px rgba(6,182,212,0.7)} }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+  .letters-row { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:25px; }
+  .letter-box { width:52px; height:60px; border:3px solid #DDD; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:1.8em; color:var(--dark); background:#F8F8F8; transition:all 0.2s; }
+  .letter-box.blank { background:var(--yellow); border:3px dashed var(--orange); color:transparent; position:relative; }
+  .letter-box.blank::after { content:'?'; color:var(--orange); position:absolute; font-size:0.9em; }
+  .letter-box.filled-correct { background:var(--green); border-color:#16A34A; color:white; animation:pop 0.3s ease; }
+  .letter-box.filled-wrong   { background:#FF4444; border-color:#CC0000; color:white; animation:shake 0.3s ease; }
+  @keyframes pop   { 0%{transform:scale(0.8)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 
-  .mode-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-  .mode-btn { background: white; border: 3px solid #DDD; border-radius: 15px; padding: 12px 24px; font-family: 'Nunito', sans-serif; font-size: 1em; font-weight: 800; cursor: pointer; transition: all 0.2s; color: var(--dark); }
-  .mode-btn:hover, .mode-btn.active { border-color: var(--orange); background: var(--orange); color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,107,53,0.3); }
+  .options-row { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+  .option-btn { width:52px; height:52px; border:3px solid var(--purple); border-radius:12px; background:white; font-family:'Fredoka One',cursive; font-size:1.6em; color:var(--purple); cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; }
+  .option-btn:hover:not(:disabled) { background:var(--purple); color:white; transform:scale(1.1); }
+  .option-btn:disabled { opacity:0.3; cursor:not-allowed; }
 
-  /* GROUP SELECTOR */
-  .group-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
-  .group-btn { background: white; border: 2px solid #DDD; border-radius: 50px; padding: 8px 20px; font-family: 'Nunito', sans-serif; font-size: 0.95em; font-weight: 800; cursor: pointer; transition: all 0.2s; color: var(--dark); }
-  .group-btn:hover, .group-btn.active { border-color: var(--purple); background: var(--purple); color: white; }
+  .feedback-msg { font-family:'Fredoka One',cursive; font-size:1.4em; min-height:40px; text-align:center; margin-bottom:10px; }
+  .action-btns { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px; }
+  .btn { padding:12px 28px; border-radius:50px; font-family:'Fredoka One',cursive; font-size:1.1em; border:none; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+  .btn-next { background:linear-gradient(135deg,var(--blue),var(--purple)); color:white; }
+  .btn-hint { background:linear-gradient(135deg,var(--yellow),var(--orange)); color:white; }
+  .btn-show { background:linear-gradient(135deg,#EEE,#DDD); color:#666; }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.2); }
 
-  .word-card { background: white; border-radius: 25px; padding: 35px 30px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.1); margin-bottom: 25px; }
-  .word-number { font-family: 'Fredoka One', cursive; font-size: 1em; color: #999; margin-bottom: 10px; }
-  .word-hint { font-size: 1.1em; color: #666; margin-bottom: 20px; font-weight: 600; min-height: 30px; }
+  /* LISTEN MODE */
+  .listen-card { background:white; border-radius:25px; padding:35px 30px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.1); margin-bottom:25px; }
+  .listen-input { font-family:'Fredoka One',cursive; font-size:2em; text-align:center; border:3px solid #DDD; border-radius:15px; padding:12px 20px; width:100%; max-width:320px; outline:none; color:var(--dark); letter-spacing:4px; }
+  .listen-input:focus { border-color:var(--blue); }
 
-  .letters-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
-  .letter-box { width: 52px; height: 60px; border: 3px solid #DDD; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka One', cursive; font-size: 1.8em; color: var(--dark); background: #F8F8F8; transition: all 0.2s; }
-  .letter-box.blank { background: var(--yellow); border: 3px dashed var(--orange); color: transparent; cursor: pointer; position: relative; }
-  .letter-box.blank::after { content: '?'; color: var(--orange); position: absolute; font-size: 0.9em; }
-  .letter-box.filled-correct { background: var(--green); border-color: #16A34A; color: white; animation: pop 0.3s ease; }
-  .letter-box.filled-wrong { background: #FF4444; border-color: #CC0000; color: white; animation: shake 0.3s ease; }
-  @keyframes pop { 0% { transform: scale(0.8); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
-  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .words-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; margin-bottom:30px; }
+  .word-tile { background:white; border:3px solid #EEE; border-radius:15px; padding:10px 8px; text-align:center; cursor:pointer; transition:all 0.2s; font-weight:800; }
+  .word-tile:hover { border-color:var(--orange); transform:translateY(-3px); }
+  .word-tile.done { background:linear-gradient(135deg,var(--green),#16A34A); border-color:#16A34A; }
+  .word-tile .wt-num  { font-size:0.75em; color:#999; display:block; }
+  .word-tile.done .wt-num { color:rgba(255,255,255,0.7); }
+  .word-tile .wt-word { font-family:'Fredoka One',cursive; font-size:1.05em; color:var(--dark); display:block; margin-top:2px; }
+  .word-tile.done .wt-word { color:white; }
+  .section-title { font-family:'Fredoka One',cursive; font-size:1.5em; color:var(--dark); margin-bottom:15px; }
 
-  .options-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
-  .option-btn { width: 52px; height: 52px; border: 3px solid var(--purple); border-radius: 12px; background: white; font-family: 'Fredoka One', cursive; font-size: 1.6em; color: var(--purple); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-  .option-btn:hover:not(:disabled) { background: var(--purple); color: white; transform: scale(1.1); }
-  .option-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .celebration { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; }
+  .celebration.show { display:flex; }
+  .celeb-card { background:white; border-radius:30px; padding:50px 40px; text-align:center; max-width:400px; animation:zoomIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275); }
+  @keyframes zoomIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .celeb-card h2 { font-family:'Fredoka One',cursive; font-size:3em; color:var(--orange); margin-bottom:10px; }
+  .confetti { font-size:3em; animation:spin 1s linear infinite; display:block; margin-bottom:10px; }
+  .stars { font-size:2em; letter-spacing:5px; margin:15px 0; }
 
-  .feedback-msg { font-family: 'Fredoka One', cursive; font-size: 1.5em; min-height: 40px; text-align: center; transition: all 0.3s; margin-bottom: 10px; }
-  .action-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
-  .btn { padding: 12px 28px; border-radius: 50px; font-family: 'Fredoka One', cursive; font-size: 1.1em; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-  .btn-next  { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; }
-  .btn-hint  { background: linear-gradient(135deg, var(--yellow), var(--orange)); color: white; }
-  .btn-show  { background: linear-gradient(135deg, #EEE, #DDD); color: #666; }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-
-  .words-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-bottom: 30px; }
-  .word-tile { background: white; border: 3px solid #EEE; border-radius: 15px; padding: 10px 8px; text-align: center; cursor: pointer; transition: all 0.2s; font-weight: 800; }
-  .word-tile:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(255,107,53,0.2); }
-  .word-tile.done { background: linear-gradient(135deg, var(--green), #16A34A); border-color: #16A34A; color: white; }
-  .word-tile .wt-num { font-size: 0.75em; color: #999; display: block; }
-  .word-tile.done .wt-num { color: rgba(255,255,255,0.7); }
-  .word-tile .wt-word { font-family: 'Fredoka One', cursive; font-size: 1.05em; color: var(--dark); display: block; margin-top: 2px; }
-  .word-tile.done .wt-word { color: white; }
-
-  .section-title { font-family: 'Fredoka One', cursive; font-size: 1.5em; color: var(--dark); margin-bottom: 15px; }
-
-  .celebration { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; }
-  .celebration.show { display: flex; }
-  .celeb-card { background: white; border-radius: 30px; padding: 50px 40px; text-align: center; max-width: 400px; animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-  @keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .celeb-card h2 { font-family: 'Fredoka One', cursive; font-size: 3em; color: var(--orange); margin-bottom: 10px; }
-  .confetti { font-size: 3em; animation: spin 1s linear infinite; display: block; margin-bottom: 10px; }
-  .stars { font-size: 2em; letter-spacing: 5px; margin: 15px 0; }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 1.8em; }
-    header::before, header::after { display: none; }
-    .letter-box, .option-btn { width: 40px; height: 46px; font-size: 1.3em; }
+  @media(max-width:600px) {
+    h1{font-size:1.8em} header::before,header::after{display:none}
+    .letter-box,.option-btn{width:40px;height:46px;font-size:1.3em}
   }
 </style>
 </head>
@@ -115,7 +113,7 @@
 
 <header>
   <h1>🐝 Spelling Bee de Ricky</h1>
-  <p class="subtitle">¡75 palabras! Let's go! 🚀</p>
+  <p class="subtitle">¡75 palabras con audio! 🔊🚀</p>
 </header>
 
 <div class="score-bar">
@@ -126,8 +124,9 @@
 
 <div class="container">
   <div class="mode-selector">
-    <button class="mode-btn active" onclick="setMode('fill')" id="modeFill">✏️ Completar letras</button>
-    <button class="mode-btn" onclick="setMode('list')" id="modeList">📋 Ver todas</button>
+    <button class="mode-btn active" onclick="setMode('fill')"   id="modeFill">✏️ Completar</button>
+    <button class="mode-btn"        onclick="setMode('listen')" id="modeListen">🎧 Dictado</button>
+    <button class="mode-btn"        onclick="setMode('list')"   id="modeList">📋 Ver todas</button>
   </div>
 
   <div class="group-selector">
@@ -142,14 +141,38 @@
     <div class="word-card">
       <div class="word-number" id="wordNumber"></div>
       <div class="word-hint"   id="wordHint"></div>
+      <button class="speak-btn" id="speakBtnFill" onclick="speakCurrent()">
+        🔊 <span id="speakLabel">Escuchar palabra</span>
+      </button>
       <div class="letters-row" id="lettersRow"></div>
       <div class="options-row" id="optionsRow"></div>
       <div class="feedback-msg" id="feedbackMsg"></div>
       <div class="action-btns">
         <button class="btn btn-hint" onclick="showHint()">💡 Pista</button>
-        <button class="btn btn-show" onclick="showAnswer()">👁️ Ver respuesta</button>
+        <button class="btn btn-show" onclick="showAnswer()">👁️ Ver</button>
         <button class="btn btn-next" onclick="nextWord()">Siguiente ➡️</button>
       </div>
+    </div>
+  </div>
+
+  <!-- LISTEN / DICTADO MODE -->
+  <div id="listenMode" style="display:none">
+    <div class="listen-card">
+      <div class="word-number" id="listenNumber">Escucha y escribe la palabra</div>
+      <p style="color:#666;font-weight:700;margin-bottom:20px">🎧 Escucha y escribe lo que oyes:</p>
+      <button class="speak-btn" id="speakBtnListen" onclick="speakListen()">
+        🔊 Escuchar
+      </button>
+      <br><br>
+      <input class="listen-input" id="listenInput" type="text" placeholder="escribe aquí..."
+        autocomplete="off" autocorrect="off" spellcheck="false"
+        onkeydown="if(event.key==='Enter') checkListen()">
+      <div style="margin-top:20px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-next"  onclick="checkListen()">✅ Comprobar</button>
+        <button class="btn btn-hint"  onclick="speakListen()">🔊 Repetir</button>
+        <button class="btn btn-show"  onclick="skipListen()">⏭️ Saltar</button>
+      </div>
+      <div class="feedback-msg" id="feedbackListen" style="margin-top:15px"></div>
     </div>
   </div>
 
@@ -173,162 +196,196 @@
 
 <script>
 const allWords = [
-  { num:1,  word:"train",     hint:"It runs on tracks and carries people 🚂" },
-  { num:2,  word:"doctor",    hint:"A person who helps sick people 👨‍⚕️" },
-  { num:3,  word:"fire",      hint:"It's hot and gives light 🔥" },
-  { num:4,  word:"date",      hint:"A day on the calendar 📅" },
-  { num:5,  word:"cook",      hint:"To prepare food with heat 🍳" },
-  { num:6,  word:"slow",      hint:"Not fast, the opposite of quick 🐢" },
-  { num:7,  word:"chew",      hint:"What you do with food in your mouth 😋" },
-  { num:8,  word:"dark",      hint:"No light, like at night 🌑" },
-  { num:9,  word:"wax",       hint:"What candles are made of 🕯️" },
-  { num:10, word:"hit",       hint:"To strike something with force 👊" },
-  { num:11, word:"job",       hint:"Work that you do to earn money 💼" },
-  { num:12, word:"alarm",     hint:"It wakes you up in the morning ⏰" },
-  { num:13, word:"may",       hint:"The fifth month of the year 🌸" },
-  { num:14, word:"place",     hint:"A location or spot 📍" },
-  { num:15, word:"break",     hint:"To split something apart 💥" },
-  { num:16, word:"page",      hint:"One side of a sheet in a book 📖" },
-  { num:17, word:"sick",      hint:"Not feeling well, ill 🤒" },
-  { num:18, word:"big",       hint:"Large in size, not small 🐘" },
-  { num:19, word:"friday",    hint:"The last school day of the week 🎉" },
-  { num:20, word:"city",      hint:"A large town with many people 🏙️" },
-  { num:21, word:"invite",    hint:"To ask someone to come to a party 🎈" },
-  { num:22, word:"person",    hint:"A human being, a man or woman 🧑" },
-  { num:23, word:"cake",      hint:"A sweet dessert for birthdays 🎂" },
-  { num:24, word:"win",       hint:"To come first in a competition 🏆" },
-  { num:25, word:"china",     hint:"A large country in Asia 🇨🇳" },
-  { num:26, word:"wish",      hint:"A hope or dream you want to come true ⭐" },
-  { num:27, word:"open",      hint:"Not closed, you can go through 🚪" },
-  { num:28, word:"rice",      hint:"A white grain eaten with meals 🍚" },
-  { num:29, word:"work",      hint:"To do a job or task 🔨" },
-  { num:30, word:"give",      hint:"To hand something to someone 🎁" },
-  { num:31, word:"day",       hint:"24 hours, opposite of night ☀️" },
-  { num:32, word:"fly",       hint:"To move through the air like a bird 🦅" },
-  { num:33, word:"slice",     hint:"A thin cut piece of food 🍕" },
-  { num:34, word:"loud",      hint:"Making a lot of noise 📢" },
-  { num:35, word:"diet",      hint:"The foods you regularly eat 🥗" },
-  { num:36, word:"meet",      hint:"To come together with someone 🤝" },
-  { num:37, word:"ear",       hint:"You use it to hear sounds 👂" },
-  { num:38, word:"arm",       hint:"The body part from shoulder to hand 💪" },
-  { num:39, word:"bus",       hint:"A big vehicle that carries many people 🚌" },
-  { num:40, word:"guess",     hint:"To give an answer without knowing for sure 🤔" },
-  { num:41, word:"hand",      hint:"You have five fingers on it ✋" },
-  { num:42, word:"head",      hint:"The top part of your body 🧠" },
-  { num:43, word:"leg",       hint:"You use it to walk and run 🦵" },
-  { num:44, word:"nose",      hint:"You use it to smell things 👃" },
-  { num:45, word:"tie",       hint:"A piece of clothing worn around the neck 👔" },
-  { num:46, word:"germany",   hint:"A country in Europe 🇩🇪" },
-  { num:47, word:"grow",      hint:"To get bigger over time 🌱" },
-  { num:48, word:"cup",       hint:"You drink tea or coffee from it ☕" },
-  { num:49, word:"will",      hint:"Shows something is going to happen 🔮" },
-  { num:50, word:"safe",      hint:"Something that keeps you protected 🛡️" },
-  { num:51, word:"dry",       hint:"Not wet, like the desert ☀️" },
-  { num:52, word:"wet",       hint:"Like after the rain 🌧️" },
-  { num:53, word:"any",       hint:"Like: do you have ___ cookies? 🍪" },
-  { num:54, word:"much",      hint:"How ___ water do you want? 💧" },
-  { num:55, word:"herd",      hint:"A group of cows or animals 🐄" },
-  { num:56, word:"ant",       hint:"A tiny insect that carries food 🐜" },
-  { num:57, word:"bee",       hint:"Makes honey and says bzzzz 🐝" },
-  { num:58, word:"piano",     hint:"A musical instrument with black and white keys 🎹" },
-  { num:59, word:"note",      hint:"A short written message 📝" },
-  { num:60, word:"lute",      hint:"An old string instrument like a guitar 🎸" },
-  { num:61, word:"guitar",    hint:"A string instrument you strum 🎸" },
-  { num:62, word:"few",       hint:"Not many, just a little bit 🤏" },
-  { num:63, word:"ring",      hint:"You wear it on your finger 💍" },
-  { num:64, word:"ask",       hint:"To make a question ❓" },
-  { num:65, word:"one",       hint:"The number 1️⃣" },
-  { num:66, word:"child",     hint:"A young boy or girl 👦" },
-  { num:67, word:"help",      hint:"When someone needs assistance 🆘" },
-  { num:68, word:"audio",     hint:"Sound, like music or a recording 🎵" },
-  { num:69, word:"cover",     hint:"Put something on top to protect it 🛏️" },
-  { num:70, word:"coin",      hint:"A round piece of metal money 🪙" },
-  { num:71, word:"pet",       hint:"An animal you have at home 🐶" },
-  { num:72, word:"map",       hint:"It shows where places are 🗺️" },
-  { num:73, word:"verb",      hint:"An action word like run, eat, sleep 🏃" },
-  { num:74, word:"salad",     hint:"A healthy food with vegetables 🥗" },
-  { num:75, word:"banana",    hint:"A yellow curved fruit 🍌" },
+  {num:1,  word:"train",   hint:"It runs on tracks and carries people 🚂"},
+  {num:2,  word:"doctor",  hint:"A person who helps sick people 👨‍⚕️"},
+  {num:3,  word:"fire",    hint:"It's hot and gives light 🔥"},
+  {num:4,  word:"date",    hint:"A day on the calendar 📅"},
+  {num:5,  word:"cook",    hint:"To prepare food with heat 🍳"},
+  {num:6,  word:"slow",    hint:"Not fast, the opposite of quick 🐢"},
+  {num:7,  word:"chew",    hint:"What you do with food in your mouth 😋"},
+  {num:8,  word:"dark",    hint:"No light, like at night 🌑"},
+  {num:9,  word:"wax",     hint:"What candles are made of 🕯️"},
+  {num:10, word:"hit",     hint:"To strike something with force 👊"},
+  {num:11, word:"job",     hint:"Work that you do to earn money 💼"},
+  {num:12, word:"alarm",   hint:"It wakes you up in the morning ⏰"},
+  {num:13, word:"may",     hint:"The fifth month of the year 🌸"},
+  {num:14, word:"place",   hint:"A location or spot 📍"},
+  {num:15, word:"break",   hint:"To split something apart 💥"},
+  {num:16, word:"page",    hint:"One side of a sheet in a book 📖"},
+  {num:17, word:"sick",    hint:"Not feeling well, ill 🤒"},
+  {num:18, word:"big",     hint:"Large in size, not small 🐘"},
+  {num:19, word:"friday",  hint:"The last school day of the week 🎉"},
+  {num:20, word:"city",    hint:"A large town with many people 🏙️"},
+  {num:21, word:"invite",  hint:"To ask someone to come to a party 🎈"},
+  {num:22, word:"person",  hint:"A human being, a man or woman 🧑"},
+  {num:23, word:"cake",    hint:"A sweet dessert for birthdays 🎂"},
+  {num:24, word:"win",     hint:"To come first in a competition 🏆"},
+  {num:25, word:"china",   hint:"A large country in Asia 🇨🇳"},
+  {num:26, word:"wish",    hint:"A hope or dream you want to come true ⭐"},
+  {num:27, word:"open",    hint:"Not closed, you can go through 🚪"},
+  {num:28, word:"rice",    hint:"A white grain eaten with meals 🍚"},
+  {num:29, word:"work",    hint:"To do a job or task 🔨"},
+  {num:30, word:"give",    hint:"To hand something to someone 🎁"},
+  {num:31, word:"day",     hint:"24 hours, opposite of night ☀️"},
+  {num:32, word:"fly",     hint:"To move through the air like a bird 🦅"},
+  {num:33, word:"slice",   hint:"A thin cut piece of food 🍕"},
+  {num:34, word:"loud",    hint:"Making a lot of noise 📢"},
+  {num:35, word:"diet",    hint:"The foods you regularly eat 🥗"},
+  {num:36, word:"meet",    hint:"To come together with someone 🤝"},
+  {num:37, word:"ear",     hint:"You use it to hear sounds 👂"},
+  {num:38, word:"arm",     hint:"The body part from shoulder to hand 💪"},
+  {num:39, word:"bus",     hint:"A big vehicle that carries many people 🚌"},
+  {num:40, word:"guess",   hint:"To give an answer without knowing for sure 🤔"},
+  {num:41, word:"hand",    hint:"You have five fingers on it ✋"},
+  {num:42, word:"head",    hint:"The top part of your body 🧠"},
+  {num:43, word:"leg",     hint:"You use it to walk and run 🦵"},
+  {num:44, word:"nose",    hint:"You use it to smell things 👃"},
+  {num:45, word:"tie",     hint:"A piece of clothing worn around the neck 👔"},
+  {num:46, word:"germany", hint:"A country in Europe 🇩🇪"},
+  {num:47, word:"grow",    hint:"To get bigger over time 🌱"},
+  {num:48, word:"cup",     hint:"You drink tea or coffee from it ☕"},
+  {num:49, word:"will",    hint:"Shows something is going to happen 🔮"},
+  {num:50, word:"safe",    hint:"Something that keeps you protected 🛡️"},
+  {num:51, word:"dry",     hint:"Not wet, like the desert ☀️"},
+  {num:52, word:"wet",     hint:"Like after the rain 🌧️"},
+  {num:53, word:"any",     hint:"Like: do you have ___ cookies? 🍪"},
+  {num:54, word:"much",    hint:"How ___ water do you want? 💧"},
+  {num:55, word:"herd",    hint:"A group of cows or animals 🐄"},
+  {num:56, word:"ant",     hint:"A tiny insect that carries food 🐜"},
+  {num:57, word:"bee",     hint:"Makes honey and says bzzzz 🐝"},
+  {num:58, word:"piano",   hint:"A musical instrument with black and white keys 🎹"},
+  {num:59, word:"note",    hint:"A short written message 📝"},
+  {num:60, word:"lute",    hint:"An old string instrument like a guitar 🎸"},
+  {num:61, word:"guitar",  hint:"A string instrument you strum 🎸"},
+  {num:62, word:"few",     hint:"Not many, just a little bit 🤏"},
+  {num:63, word:"ring",    hint:"You wear it on your finger 💍"},
+  {num:64, word:"ask",     hint:"To make a question ❓"},
+  {num:65, word:"one",     hint:"The number 1️⃣"},
+  {num:66, word:"child",   hint:"A young boy or girl 👦"},
+  {num:67, word:"help",    hint:"When someone needs assistance 🆘"},
+  {num:68, word:"audio",   hint:"Sound, like music or a recording 🎵"},
+  {num:69, word:"cover",   hint:"Put something on top to protect it 🛏️"},
+  {num:70, word:"coin",    hint:"A round piece of metal money 🪙"},
+  {num:71, word:"pet",     hint:"An animal you have at home 🐶"},
+  {num:72, word:"map",     hint:"It shows where places are 🗺️"},
+  {num:73, word:"verb",    hint:"An action word like run, eat, sleep 🏃"},
+  {num:74, word:"salad",   hint:"A healthy food with vegetables 🥗"},
+  {num:75, word:"banana",  hint:"A yellow curved fruit 🍌"},
 ];
 
-let activeWords = [...allWords];
+let activeWords = allWords.slice(0, 25);
 let currentIndex = 0;
 let score = 0;
 let completed = new Set();
-let blanks = [];
-let currentBlankIdx = 0;
-let wordSolved = false;
-let hintUsed = false;
-let currentGroup = 0;
+let blanks = [], currentBlankIdx = 0, wordSolved = false, hintUsed = false;
+let currentGroup = 0, currentMode = 'fill';
+const synth = window.speechSynthesis;
+let voices = [];
 
+synth.onvoiceschanged = () => { voices = synth.getVoices(); };
+setTimeout(() => { voices = synth.getVoices(); }, 500);
+
+function speak(text, slow, onEnd) {
+  synth.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-US';
+  utt.rate = slow ? 0.7 : 0.85;
+  utt.pitch = 1.1;
+  const v = voices.find(v => v.lang === 'en-US' && /female|zira|susan|karen|samantha/i.test(v.name))
+         || voices.find(v => v.lang === 'en-US')
+         || voices.find(v => v.lang.startsWith('en'));
+  if (v) utt.voice = v;
+  utt.onend = onEnd || null;
+  synth.speak(utt);
+}
+
+function setSpeakBtn(id, active) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.classList.toggle('speaking', active);
+}
+
+function speakCurrent() {
+  const w = activeWords[currentIndex];
+  setSpeakBtn('speakBtnFill', true);
+  document.getElementById('speakLabel').textContent = 'Escuchando...';
+  const utt = new SpeechSynthesisUtterance('The word is: ' + w.word + '. ' + w.word + '.');
+  utt.lang = 'en-US'; utt.rate = 0.8; utt.pitch = 1.1;
+  const v = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+  if (v) utt.voice = v;
+  utt.onend = () => { setSpeakBtn('speakBtnFill', false); document.getElementById('speakLabel').textContent = 'Escuchar palabra'; };
+  synth.cancel(); synth.speak(utt);
+}
+
+function speakListen() {
+  const w = activeWords[currentIndex];
+  setSpeakBtn('speakBtnListen', true);
+  const utt = new SpeechSynthesisUtterance(w.word);
+  utt.lang = 'en-US'; utt.rate = 0.75; utt.pitch = 1.1;
+  const v = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+  if (v) utt.voice = v;
+  utt.onend = () => setSpeakBtn('speakBtnListen', false);
+  synth.cancel(); synth.speak(utt);
+}
+
+// GROUP & MODE
 function setGroup(g) {
   currentGroup = g;
   document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(g === -1 ? 'grpAll' : 'grp' + g).classList.add('active');
-  if (g === -1) activeWords = [...allWords];
-  else activeWords = allWords.slice(g * 25, g * 25 + 25);
+  activeWords = g === -1 ? [...allWords] : allWords.slice(g * 25, g * 25 + 25);
   currentIndex = 0;
-  renderWord();
+  if (currentMode === 'fill') renderWord();
+  else if (currentMode === 'listen') renderListen();
 }
 
 function setMode(mode) {
-  document.getElementById('fillMode').style.display = mode === 'fill' ? 'block' : 'none';
-  document.getElementById('listMode').style.display = mode === 'list' ? 'block' : 'none';
-  document.getElementById('modeFill').classList.toggle('active', mode === 'fill');
-  document.getElementById('modeList').classList.toggle('active', mode === 'list');
-  if (mode === 'list') renderList();
-  if (mode === 'fill') renderWord();
+  currentMode = mode;
+  document.getElementById('fillMode').style.display   = mode==='fill'   ? 'block':'none';
+  document.getElementById('listenMode').style.display = mode==='listen' ? 'block':'none';
+  document.getElementById('listMode').style.display   = mode==='list'   ? 'block':'none';
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mode' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('active');
+  synth.cancel();
+  if (mode==='fill')   renderWord();
+  if (mode==='listen') renderListen();
+  if (mode==='list')   renderList();
 }
 
-function renderList() {
-  document.getElementById('wordsGrid').innerHTML = allWords.map((w, i) =>
-    `<div class="word-tile ${completed.has(i) ? 'done' : ''}" onclick="goToWord(${i})">
-      <span class="wt-num">#${w.num}</span>
-      <span class="wt-word">${w.word}</span>
-    </div>`
-  ).join('');
-}
-
-function goToWord(idx) {
-  currentGroup = -1;
-  activeWords = [...allWords];
-  currentIndex = idx;
-  document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('grpAll').classList.add('active');
-  setMode('fill');
-}
-
+// FILL MODE
 function generateBlanks(word) {
-  const len = word.length;
-  let n = len <= 3 ? 1 : len <= 5 ? 2 : len <= 7 ? 3 : 4;
-  const available = [...Array(len).keys()].filter(i => i > 0);
-  const indices = [];
-  while (indices.length < Math.min(n, available.length)) {
-    const r = available[Math.floor(Math.random() * available.length)];
-    if (!indices.includes(r)) indices.push(r);
+  const n = word.length<=3?1:word.length<=5?2:word.length<=7?3:4;
+  const avail = [...Array(word.length).keys()].filter(i=>i>0);
+  const idx = [];
+  while (idx.length < Math.min(n, avail.length)) {
+    const r = avail[Math.floor(Math.random()*avail.length)];
+    if (!idx.includes(r)) idx.push(r);
   }
-  return indices;
+  return idx;
 }
 
 function generateOptions(word, blanks) {
-  const correct = blanks.map(i => word[i]);
+  const correct = blanks.map(i=>word[i]);
   const pool = 'abcdefghijklmnoprstuvwy';
   const opts = [...new Set(correct)];
-  while (opts.length < Math.min(7, correct.length + 4)) {
-    const l = pool[Math.floor(Math.random() * pool.length)];
+  while (opts.length < Math.min(7, correct.length+4)) {
+    const l = pool[Math.floor(Math.random()*pool.length)];
     if (!opts.includes(l)) opts.push(l);
   }
-  return opts.sort(() => Math.random() - 0.5);
+  return opts.sort(()=>Math.random()-0.5);
 }
 
 function renderWord() {
   const w = activeWords[currentIndex];
-  wordSolved = false; hintUsed = false; currentBlankIdx = 0;
-  document.getElementById('wordNumber').textContent = `Palabra #${w.num} (${currentIndex + 1} de ${activeWords.length})`;
+  wordSolved=false; hintUsed=false; currentBlankIdx=0;
+  document.getElementById('wordNumber').textContent = `Palabra #${w.num} (${currentIndex+1} de ${activeWords.length})`;
   document.getElementById('wordHint').textContent = w.hint;
   document.getElementById('feedbackMsg').textContent = '';
+  document.getElementById('speakLabel').textContent = 'Escuchar palabra';
+  setSpeakBtn('speakBtnFill', false);
   blanks = generateBlanks(w.word);
   const opts = generateOptions(w.word, blanks);
-  document.getElementById('lettersRow').innerHTML = w.word.split('').map((ch, i) =>
+  document.getElementById('lettersRow').innerHTML = w.word.split('').map((ch,i) =>
     blanks.includes(i)
       ? `<div class="letter-box blank" id="box-${i}"></div>`
       : `<div class="letter-box">${ch.toUpperCase()}</div>`
@@ -336,84 +393,113 @@ function renderWord() {
   document.getElementById('optionsRow').innerHTML = opts.map(l =>
     `<button class="option-btn" onclick="selectLetter('${l}',this)">${l.toUpperCase()}</button>`
   ).join('');
+  setTimeout(() => speakCurrent(), 700);
 }
 
 function selectLetter(letter, btn) {
-  if (wordSolved || currentBlankIdx >= blanks.length) return;
+  if (wordSolved || currentBlankIdx>=blanks.length) return;
   const w = activeWords[currentIndex];
-  const targetIdx = blanks[currentBlankIdx];
-  const box = document.getElementById(`box-${targetIdx}`);
-  if (letter === w.word[targetIdx]) {
-    box.textContent = letter.toUpperCase();
-    box.className = 'letter-box filled-correct';
-    currentBlankIdx++;
-    btn.disabled = true;
+  const ti = blanks[currentBlankIdx];
+  const box = document.getElementById(`box-${ti}`);
+  if (letter === w.word[ti]) {
+    box.textContent = letter.toUpperCase(); box.className = 'letter-box filled-correct';
+    currentBlankIdx++; btn.disabled = true;
     if (currentBlankIdx >= blanks.length) {
       wordSolved = true;
-      const globalIdx = allWords.indexOf(w);
-      completed.add(globalIdx);
-      score += hintUsed ? 5 : 10;
-      updateScore();
-      setTimeout(() => showCelebration(w.word, hintUsed ? 5 : 10), 300);
+      completed.add(allWords.indexOf(w));
+      score += hintUsed ? 5 : 10; updateScore();
+      synth.cancel();
+      setTimeout(() => {
+        speak(w.word, false, () => showCelebration(w.word, hintUsed?5:10));
+      }, 300);
     } else {
       document.getElementById('feedbackMsg').textContent = '✅ ¡Correcto! Siguiente letra...';
     }
   } else {
     box.className = 'letter-box blank filled-wrong';
-    setTimeout(() => { box.className = 'letter-box blank'; }, 500);
+    setTimeout(()=>{ box.className='letter-box blank'; }, 500);
     document.getElementById('feedbackMsg').textContent = '❌ ¡Intenta otra letra!';
   }
 }
 
 function showHint() {
-  if (wordSolved || currentBlankIdx >= blanks.length) return;
+  if (wordSolved || currentBlankIdx>=blanks.length) return;
   hintUsed = true;
   const w = activeWords[currentIndex];
-  const targetIdx = blanks[currentBlankIdx];
-  const box = document.getElementById(`box-${targetIdx}`);
-  box.textContent = w.word[targetIdx].toUpperCase();
-  box.className = 'letter-box filled-correct';
+  const ti = blanks[currentBlankIdx];
+  const box = document.getElementById(`box-${ti}`);
+  box.textContent = w.word[ti].toUpperCase(); box.className = 'letter-box filled-correct';
   currentBlankIdx++;
   document.getElementById('feedbackMsg').textContent = '💡 ¡Pista usada!';
-  if (currentBlankIdx >= blanks.length) {
-    wordSolved = true;
-    const globalIdx = allWords.indexOf(w);
-    completed.add(globalIdx);
-    score += 3; updateScore();
-  }
+  if (currentBlankIdx>=blanks.length) { wordSolved=true; completed.add(allWords.indexOf(w)); score+=3; updateScore(); }
 }
 
 function showAnswer() {
   const w = activeWords[currentIndex];
-  blanks.forEach(i => {
-    const box = document.getElementById(`box-${i}`);
-    if (box) { box.textContent = w.word[i].toUpperCase(); box.className = 'letter-box filled-correct'; }
-  });
+  blanks.forEach(i => { const b=document.getElementById(`box-${i}`); if(b){b.textContent=w.word[i].toUpperCase();b.className='letter-box filled-correct';} });
   wordSolved = true;
   document.getElementById('feedbackMsg').textContent = '👁️ Así se escribe: ' + w.word.toUpperCase();
-  document.getElementById('optionsRow').querySelectorAll('button').forEach(b => b.disabled = true);
+  document.getElementById('optionsRow').querySelectorAll('button').forEach(b=>b.disabled=true);
+  speak(w.word);
 }
 
-function nextWord() {
-  currentIndex = (currentIndex + 1) % activeWords.length;
-  renderWord();
+function nextWord() { currentIndex=(currentIndex+1)%activeWords.length; renderWord(); }
+
+// LISTEN / DICTADO MODE
+function renderListen() {
+  const w = activeWords[currentIndex];
+  document.getElementById('listenNumber').textContent = `Palabra #${w.num} de ${activeWords.length} — ¡Escucha y escribe!`;
+  document.getElementById('listenInput').value = '';
+  document.getElementById('listenInput').disabled = false;
+  document.getElementById('feedbackListen').textContent = '';
+  setSpeakBtn('speakBtnListen', false);
+  setTimeout(() => speakListen(), 700);
 }
 
-function showCelebration(word, points) {
-  document.getElementById('celebWord').textContent = word.toUpperCase() + ' ✓';
-  document.getElementById('celebStars').textContent = points >= 10 ? '⭐⭐⭐' : '⭐⭐';
+function checkListen() {
+  const w = activeWords[currentIndex];
+  const typed = document.getElementById('listenInput').value.trim().toLowerCase();
+  const fb = document.getElementById('feedbackListen');
+  if (typed === w.word) {
+    fb.innerHTML = `<span style="color:var(--green)">🎉 ¡Correcto! ${w.word.toUpperCase()}</span>`;
+    completed.add(allWords.indexOf(w)); score += 15; updateScore();
+    speak('Excellent! ' + w.word, false, () => setTimeout(()=>{ currentIndex=(currentIndex+1)%activeWords.length; renderListen(); }, 1000));
+  } else {
+    fb.innerHTML = `<span style="color:#FF4444">❌ Inténtalo de nuevo</span>`;
+    speakListen();
+  }
+}
+
+function skipListen() { currentIndex=(currentIndex+1)%activeWords.length; renderListen(); }
+
+// LIST MODE
+function renderList() {
+  document.getElementById('wordsGrid').innerHTML = allWords.map((w,i) =>
+    `<div class="word-tile ${completed.has(i)?'done':''}" onclick="goToWord(${i})">
+      <span class="wt-num">#${w.num}</span>
+      <span class="wt-word">${w.word}</span>
+    </div>`
+  ).join('');
+}
+
+function goToWord(idx) {
+  activeWords=[...allWords]; currentIndex=idx;
+  document.querySelectorAll('.group-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('grpAll').classList.add('active');
+  setMode('fill');
+}
+
+function showCelebration(word, pts) {
+  document.getElementById('celebWord').textContent = word.toUpperCase()+' ✓';
+  document.getElementById('celebStars').textContent = pts>=10?'⭐⭐⭐':'⭐⭐';
   document.getElementById('celebration').classList.add('show');
 }
-
-function closeCelebration() {
-  document.getElementById('celebration').classList.remove('show');
-  nextWord();
-}
+function closeCelebration() { document.getElementById('celebration').classList.remove('show'); nextWord(); }
 
 function updateScore() {
   document.getElementById('scoreNum').textContent = score;
   document.getElementById('doneNum').textContent = completed.size;
-  document.getElementById('progressFill').style.width = (completed.size / 75 * 100) + '%';
+  document.getElementById('progressFill').style.width = (completed.size/75*100)+'%';
 }
 
 renderWord();
